@@ -233,7 +233,7 @@ kubectl get svc argocd-agent-principal \
 Issue gRPC server certificate (address for Agent connection) <br />
 ```bash
 # Check NodePort
-PRINCIPAL_EXTERNAL_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' argocd-hub-control-plane)
+PRINCIPAL_EXTERNAL_IP=$(kubectl get node argocd-hub-control-plane -o jsonpath='{.status.addresses[0].address}')
 echo "<principal-external-ip>: $PRINCIPAL_EXTERNAL_IP"
 
 PRINCIPAL_NODE_PORT=$(kubectl get svc argocd-agent-principal -n $NAMESPACE_NAME --context kind-$PRINCIPAL_CLUSTER_NAME -o jsonpath='{.spec.ports[0].nodePort}'
@@ -374,7 +374,7 @@ Create Agent configuration on Principal. <br />
 
 ```bash
 # Check NodePort
-PRINCIPAL_EXTERNAL_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' argocd-hub-control-plane)
+PRINCIPAL_EXTERNAL_IP=$(kubectl get node argocd-hub-control-plane -o jsonpath='{.status.addresses[0].address}')
 echo "<principal-external-ip>: $PRINCIPAL_EXTERNAL_IP"
 
 argocd-agentctl agent create $AGENT_APP_NAME \
@@ -440,7 +440,7 @@ Configure Agent to connect to Principal using mTLS authentication.
 
 ```bash
 # Check NodePort
-PRINCIPAL_EXTERNAL_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' argocd-hub-control-plane)
+PRINCIPAL_EXTERNAL_IP=$(kubectl get node argocd-hub-control-plane -o jsonpath='{.status.addresses[0].address}')
 echo "<principal-external-ip>: $PRINCIPAL_EXTERNAL_IP"
 
 PRINCIPAL_NODE_PORT=$(kubectl get svc argocd-agent-principal -n $NAMESPACE_NAME --context kind-$PRINCIPAL_CLUSTER_NAME -o jsonpath='{.spec.ports[0].nodePort}'
@@ -512,7 +512,7 @@ kubectl get appprojs -n $NAMESPACE_NAME --context kind-$AGENT_CLUSTER_NAME
 
 ```bash
 # Check NodePort
-PRINCIPAL_EXTERNAL_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' argocd-hub-control-plane)
+PRINCIPAL_EXTERNAL_IP=$(kubectl get node argocd-hub-control-plane -o jsonpath='{.status.addresses[0].address}')
 echo "<principal-external-ip>: $PRINCIPAL_EXTERNAL_IP"
 
 PRINCIPAL_NODE_PORT=$(kubectl get svc argocd-agent-principal -n $NAMESPACE_NAME --context kind-$PRINCIPAL_CLUSTER_NAME -o jsonpath='{.spec.ports[0].nodePort}'
